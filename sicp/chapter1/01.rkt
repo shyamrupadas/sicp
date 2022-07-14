@@ -1,0 +1,35 @@
+#lang racket/base
+
+(require rackunit)
+
+;; BEGIN
+(define (sum-of-squares-of-top-two first second third)
+  (define (square x)
+    (* x x)
+  )
+  (define (get-max x y)
+    (cond ((> x y) x)
+          ((= x y) x)
+          ((< x y) y)
+  ))
+  (define (get-min x y)
+          (cond ((< x y) x)
+                ((= x y) x)
+                ((> x y) y)
+  ))
+  (define (get-top1)
+    (get-max (get-max first second) third)
+  )
+  (define (get-top2)
+          (cond ((< (get-max first second) third) (get-max first second))
+                ((> (get-max first second) third) (get-max (get-min first second) third))
+          )
+  )
+  (+ (square (get-top1)) (square (get-top2)))
+  )
+;; END
+
+(check-equal? (sum-of-squares-of-top-two 1 2 3) 13)
+(check-equal? (sum-of-squares-of-top-two 3 4 2) 25)
+(check-equal? (sum-of-squares-of-top-two 5 3 4) 41)
+(check-equal? (sum-of-squares-of-top-two 1 1 2) 5)
